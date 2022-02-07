@@ -32,10 +32,7 @@ export default class MyDocument extends Document {
   render() {
     return (
       <Html {...this.helmetHtmlAttrComponents}>
-        <Head>
-          {this.helmetHeadComponents}
-          <meta name="google-site-verification" content="acZEE-WNEJ0cwvOEMoFEO8W8fk219ZkAkmOvMzewhwk" />
-        </Head>
+        <Head>{this.helmetHeadComponents}</Head>
         <body {...this.helmetBodyAttrComponents}>
           <Main />
           <NextScript />
