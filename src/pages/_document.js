@@ -33,8 +33,24 @@ export default class MyDocument extends Document {
     return (
       <Html {...this.helmetHtmlAttrComponents}>
         <Head>
+          {/* Global site tag (gtag.js) - Google Analytics */}
+          <script
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+          ></script>
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+              page_path: window.location.pathname,
+            });
+          `,
+            }}
+          />
           {this.helmetHeadComponents}
-          <meta name="google-site-verification" content="acZEE-WNEJ0cwvOEMoFEO8W8fk219ZkAkmOvMzewhwk" />
         </Head>
         <body {...this.helmetBodyAttrComponents}>
           <Main />
