@@ -2,19 +2,19 @@
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import { Helmet } from 'react-helmet';
 import parse from 'html-react-parser';
-import { getVerificationTag } from 'lib/google-sitekit';
+import { getVerificationTag, getTags } from 'lib/google-sitekit';
 
 // Via https://github.com/vercel/next.js/blob/canary/examples/with-react-helmet/pages/_document.js
 
 export default class MyDocument extends Document {
   static async getInitialProps(...args) {
     const documentProps = await super.getInitialProps(...args);
-    // const gaScript = await getScripts();
+    const siteKitTags = await getTags();
     const verificationTags = await getVerificationTag();
 
     // see https://github.com/nfl/react-helmet#server-usage for more information
     // 'head' was occupied by 'renderPage().head', we cannot use it
-    return { ...documentProps, helmet: Helmet.renderStatic(), verificationTags };
+    return { ...documentProps, helmet: Helmet.renderStatic(), verificationTags, siteKitTags };
   }
 
   // should render on <html>
@@ -34,9 +34,9 @@ export default class MyDocument extends Document {
       .map((el) => this.props.helmet[el].toComponent());
   }
 
-  // get helmetHeadGAScripts() {
-  //   return this.props.gaScript;
-  // }
+  get helmetHeadSiteKitTags() {
+    return this.props.siteKitTags?.head;
+  }
 
   get helmetHeadVerificationTags() {
     return this.props.verificationTags;
@@ -48,6 +48,7 @@ export default class MyDocument extends Document {
         <Head>
           {/* Global site tag (gtag.js) - Google Analytics */}
           {this.helmetHeadVerificationTags.map((tag) => parse(tag))}
+          {parse(this.helmetHeadSiteKitTags?.analytics)}
           {/* {parse(this.helmetHeadGAScripts)} */}
           {/* <script
             async

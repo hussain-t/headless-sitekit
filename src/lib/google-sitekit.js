@@ -1,5 +1,5 @@
-export async function getGATags() {
-  const res = await fetch(`${process.env.WORDPRESS_SITEKIT_ENDPOINT}/core/user/data/verification-tag`);
+export async function getTags() {
+  const res = await fetch(`${process.env.WORDPRESS_SITEKIT_ENDPOINT}/core/modules/data/tags`);
   return res.json();
 }
 
